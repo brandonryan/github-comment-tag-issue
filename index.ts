@@ -1,7 +1,7 @@
 import {} from "@actions/core"
 import {context} from "@actions/github"
 
-//TODO: figure out a way to get here
+//TODO: figure out a way to get here v2
 
 //these are not typed unfortunately
 const {base, head} = context.payload.pull_request!

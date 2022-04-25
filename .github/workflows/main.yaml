@@ -1,7 +1,8 @@
 name: bootstrap
 on:
-  pull_request:
-    branches: [ main ]
+  push:
+    branches:
+      - main
 jobs:
   create-issues:
     runs-on: ubuntu-latest

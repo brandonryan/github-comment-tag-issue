@@ -8746,15 +8746,21 @@ var __webpack_exports__ = {};
 /* harmony import */ var _actions_github__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__nccwpck_require__.n(_actions_github__WEBPACK_IMPORTED_MODULE_1__);
 
 
-//TODO: figure out a way to get here
+//TODO: figure out a way to get here v2
+console.dir(_actions_github__WEBPACK_IMPORTED_MODULE_1__.context, { depth: null, colors: false });
 //these are not typed unfortunately
 const { base, head } = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.pull_request;
 const { default_branch } = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.repository;
-console.log("base ref:", base.ref);
-console.log("base sha:", base.sha);
-console.log("head ref:", head.ref);
-console.log("base sha:", head.sha);
-console.log("base is default branch:", default_branch === base.ref);
+console.log('base ref:', base.ref);
+console.log('base sha:', base.sha);
+console.log('head ref:', head.ref);
+console.log('base sha:', head.sha);
+console.log('base is default branch:', default_branch === base.ref);
+// const output = await exec('git', ['diff', '--name-only', `${base.sha}...${head.sha}`])
+// console.log('changed files: ', output)
+// const file = await exec('git', ['show', `${sha}:${filePath}`])
+//head: 71e64a63c027ecdd796d0e5238ce3f48cca91b4d
+//base: e6919f0d3b11d7f379498929ee69b940ff7dc81e
 
 })();
 

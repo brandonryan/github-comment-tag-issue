@@ -8747,7 +8747,7 @@ var __webpack_exports__ = {};
 
 
 //TODO: figure out a way to get here
-console.log(_actions_github__WEBPACK_IMPORTED_MODULE_1__.context);
+console.dir(_actions_github__WEBPACK_IMPORTED_MODULE_1__.context, { depth: null, colors: false });
 
 })();
 

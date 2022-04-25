@@ -8747,7 +8747,14 @@ var __webpack_exports__ = {};
 
 
 //TODO: figure out a way to get here
-console.dir(_actions_github__WEBPACK_IMPORTED_MODULE_1__.context, { depth: null, colors: false });
+//these are not typed unfortunately
+const { base, head } = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.pull_request;
+const { default_branch } = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.repository;
+console.log("base ref:", base.ref);
+console.log("base sha:", base.sha);
+console.log("head ref:", head.ref);
+console.log("base sha:", head.sha);
+console.log("base is default branch:", default_branch === base.ref);
 
 })();
 

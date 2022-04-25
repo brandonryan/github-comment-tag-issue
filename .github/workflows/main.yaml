@@ -8,5 +8,7 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
+      - name: make sure dist is there
+        run: pwd && ls -a
       - name: Self
         uses: ./

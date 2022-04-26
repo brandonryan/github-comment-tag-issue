@@ -14,7 +14,8 @@ const branch = context.ref.replace('refs/heads/', '')
 console.log('branch:', branch)
 console.log('base is default branch:', default_branch === branch)
 
-const files = await gitChangedFiles(before, after)
+let files = await gitChangedFiles(before, after)
+files = files.filter(file => file.startsWith('src/'))
 console.log("files", files)
 
 const beforeResolver = new CommentResolver(before, files, ['todo'])

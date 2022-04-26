@@ -25151,6 +25151,9 @@ function regexForTagParse(tags) {
 function parseTag(value, tags) {
     const reg = regexForTagParse(tags);
     const m = value.toLocaleLowerCase().match(reg);
+    console.log(value);
+    console.log(m);
+    console.log(m?.groups);
     if (m === null || !m.groups)
         return;
     const { name, issue } = m.groups;
@@ -25299,7 +25302,8 @@ const { default_branch } = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.
 const branch = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.ref.replace('refs/heads/', '');
 console.log('branch:', branch);
 console.log('base is default branch:', default_branch === branch);
-const files = await (0,_git__WEBPACK_IMPORTED_MODULE_2__/* .gitChangedFiles */ .j)(before, after);
+let files = await (0,_git__WEBPACK_IMPORTED_MODULE_2__/* .gitChangedFiles */ .j)(before, after);
+files = files.filter(file => file.startsWith('src/'));
 console.log("files", files);
 const beforeResolver = new _CommentResolver__WEBPACK_IMPORTED_MODULE_3__/* .CommentResolver */ .w(before, files, ['todo']);
 const beforeTags = await beforeResolver.resolve();

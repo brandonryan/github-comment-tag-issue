@@ -46,6 +46,10 @@ interface Tag {
 function parseTag(value: string, tags: string[]): Tag|undefined {
     const reg = regexForTagParse(tags)
     const m = value.toLocaleLowerCase().match(reg)
+
+    console.log(value)
+    console.log(m)
+    console.log(m?.groups)
     if(m === null || !m.groups) return
     const {name, issue} = m.groups
     if(!name || !tags.includes(name)) return

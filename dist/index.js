@@ -25130,6 +25130,8 @@ class CommentResolver {
     async resolve() {
         const commentsPerFile = await Promise.all(this.#fileNames.map(async (fileName) => {
             const fileContent = await (0,git/* readFileAtCommit */.d)(this.#commitSHA, fileName);
+            if (!fileContent)
+                return [];
             const comments = parseComments(fileName, fileContent);
             return parseTagged(fileName, comments, this.#tags);
         }));
@@ -25259,8 +25261,13 @@ async function gitChangedFiles(before, after) {
     return (0,util/* splitLines */.uq)(stdout);
 }
 async function readFileAtCommit(commitSHA, filePath) {
-    const { stdout } = await exec(`git show ${commitSHA}:${filePath}`);
-    return stdout;
+    try {
+        const { stdout } = await exec(`git show ${commitSHA}:${filePath}`);
+        return stdout;
+    }
+    catch (err) {
+        return undefined;
+    }
 }
 
 

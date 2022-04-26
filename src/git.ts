@@ -9,7 +9,11 @@ export async function gitChangedFiles(before: string, after: string): Promise<st
     return splitLines(stdout)
 }
 
-export async function readFileAtCommit(commitSHA: string, filePath: string): Promise<string> {
-    const {stdout} = await exec(`git show ${commitSHA}:${filePath}`)
-    return stdout
+export async function readFileAtCommit(commitSHA: string, filePath: string): Promise<string|undefined> {
+    try {
+        const {stdout} = await exec(`git show ${commitSHA}:${filePath}`)
+        return stdout
+    } catch (err) {
+        return undefined
+    }
 }

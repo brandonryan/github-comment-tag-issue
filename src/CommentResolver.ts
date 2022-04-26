@@ -18,6 +18,7 @@ export class CommentResolver {
     async resolve() {
         const commentsPerFile = await Promise.all(this.#fileNames.map(async fileName => {
             const fileContent = await readFileAtCommit(this.#commitSHA, fileName)
+            if(!fileContent) return []
             const comments = parseComments(fileName, fileContent)
             return parseTagged(fileName, comments, this.#tags)
         }))

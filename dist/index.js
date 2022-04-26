@@ -25077,89 +25077,157 @@ function wrappy (fn, cb) {
 
 /***/ }),
 
-/***/ 7156:
+/***/ 4941:
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
-/* harmony export */ __nccwpck_require__.d(__webpack_exports__, {
-/* harmony export */   "w": () => (/* binding */ parseJavascriptCommentTags)
-/* harmony export */ });
-/* harmony import */ var _babel_parser__WEBPACK_IMPORTED_MODULE_0__ = __nccwpck_require__(8833);
-/* harmony import */ var _util__WEBPACK_IMPORTED_MODULE_1__ = __nccwpck_require__(3430);
 
+// EXPORTS
+__nccwpck_require__.d(__webpack_exports__, {
+  "w": () => (/* binding */ CommentResolver)
+});
 
-function shouldAppendLast(last, current) {
-    //if its on the next line and the same column
-    return last.loc.start.line === current.loc.start.line + 1 &&
-        last.loc.start.column === current.loc.start.column;
+// EXTERNAL MODULE: ./src/git.ts + 1 modules
+var git = __nccwpck_require__(2831);
+// EXTERNAL MODULE: external "path"
+var external_path_ = __nccwpck_require__(1017);
+// EXTERNAL MODULE: ./node_modules/.pnpm/@babel+parser@7.17.9/node_modules/@babel/parser/lib/index.js
+var lib = __nccwpck_require__(8833);
+;// CONCATENATED MODULE: ./src/resolvers/javascript.ts
+
+function parse(input, babelPlugins = []) {
+    const { comments } = (0,lib/* parse */.Qc)(input, {
+        sourceType: 'unambiguous',
+        errorRecovery: true,
+        plugins: babelPlugins,
+    });
+    if (!comments)
+        return [];
+    return comments.map((comm) => ({
+        block: comm.type === "CommentBlock",
+        value: comm.value,
+        index: comm.start,
+        start: comm.loc.start,
+        end: comm.loc.end,
+    }));
 }
-//tags are assumed to be lower case
-function findTag(value, tags) {
-    for (const tag of tags) {
-        if (value.toLocaleLowerCase().startsWith(tag + ':')) {
-            return tag;
-        }
+
+// EXTERNAL MODULE: ./src/util.ts
+var util = __nccwpck_require__(3430);
+;// CONCATENATED MODULE: ./src/CommentResolver.ts
+
+
+
+
+class CommentResolver {
+    #commitSHA;
+    #fileNames;
+    #tags;
+    constructor(commitSHA, fileNames, tags) {
+        this.#commitSHA = commitSHA;
+        this.#fileNames = fileNames;
+        this.#tags = tags;
     }
-    return undefined;
+    async resolve() {
+        const commentsPerFile = await Promise.all(this.#fileNames.map(async (fileName) => {
+            const fileContent = await (0,git/* readFileAtCommit */.d)(this.#commitSHA, fileName);
+            const comments = parseComments(fileName, fileContent);
+            return parseTagged(fileName, comments, this.#tags);
+        }));
+        return (0,util/* flatten */.xH)(commentsPerFile);
+    }
+    async writeIssueNumber(tagged) {
+        if (!tagged.issueNumber)
+            throw new Error("TaggedComment missing issue number");
+        //TODO: write to file, the issue number
+    }
+}
+function regexForTagParse(tags) {
+    //REGEX: ^(?<tag>todo|fixme)(?<issue> \[#\d+\])?:
+    return new RegExp(`^(?<tag>${tags.join('|')})(?<issue> \\[#\\d+\\])?:`);
+}
+function parseTag(value, tags) {
+    const reg = regexForTagParse(tags);
+    const m = value.toLocaleLowerCase().match(reg);
+    if (m === null || !m.groups)
+        return;
+    const { name, issue } = m.groups;
+    if (!name || !tags.includes(name))
+        return;
+    //remove our match from value
+    const len = m.reduce((t, s) => t + s.length, 0);
+    value = value.slice(len);
+    //return bare tagged
+    if (!issue) {
+        return { name, value };
+    }
+    //return tagged with issue number
+    const issueNum = parseInt(issue.slice(3, -1), 10);
+    if (Number.isNaN(issueNum)) {
+        //TODO: issue a warning or error stating that we could not parse the issue number.
+        return;
+    }
+    return { name, value, issue: issueNum };
+}
+function shouldAppend(base, current) {
+    if (base.block)
+        return false;
+    if (base.start.line !== current.start.line + 1)
+        return false;
+    if (base.start.column !== current.start.column)
+        return false;
+    return true;
 }
 function parseBlockTags(blockComment, tags) {
     console.log(blockComment, tags);
     return [];
 }
-function parseJavascriptCommentTags(input, tags) {
-    const { comments } = (0,_babel_parser__WEBPACK_IMPORTED_MODULE_0__/* .parse */ .Qc)(input, {
-        sourceType: 'unambiguous',
-        errorRecovery: true,
-        plugins: ['typescript'],
-    });
-    if (!comments)
-        return [];
-    const { tagged } = comments.reduce((accum, comm, i) => {
-        const { tagged, canAppend } = accum;
-        switch (comm.type) {
-            case "CommentBlock": {
-                tagged.push(...parseBlockTags(comm, tags));
-                accum.canAppend = false;
-                return accum;
+function parseTagged(fileName, comments, tags) {
+    const tagged = [];
+    for (const comm of comments) {
+        if (comm.block) {
+            tagged.push(...parseBlockTags(comm, tags));
+        }
+        else {
+            const parsed = parseTag(comm.value.trim(), tags);
+            if (parsed) {
+                tagged.push({
+                    tag: parsed.name,
+                    title: parsed.value,
+                    issueNumber: parsed.issue,
+                    fileName: fileName,
+                    commentSrc: comm,
+                });
             }
-            case "CommentLine": {
-                const value = comm.value.trim();
-                const tag = findTag(value, tags);
-                if (tag !== undefined) {
-                    tagged.push({
-                        tag,
-                        title: value.substring(tag.length + 1),
-                        body: '',
-                        end: comm.loc.end,
-                        start: comm.loc.start
-                    });
-                }
-                else if (canAppend) { //for line comments, we need to see if we should add on to the last one before we throw it away
-                    const lastComment = comments[i - 1];
-                    if (lastComment?.type === 'CommentLine' && shouldAppendLast(lastComment, comm)) {
-                        const lastTagged = (0,_util__WEBPACK_IMPORTED_MODULE_1__/* .last */ .Z)(tagged);
-                        if (!lastTagged)
-                            throw new Error("No last tagged. Should never happen.");
-                        if (lastTagged.body === '') {
-                            lastTagged.body = value;
-                        }
-                        else {
-                            lastTagged.body = '\n' + value;
-                        }
-                        lastTagged.end = comm.loc.end;
+            else {
+                const lastTagged = (0,util/* last */.Z$)(tagged);
+                if (lastTagged && shouldAppend(lastTagged.commentSrc, comm)) {
+                    //update tag
+                    if (!lastTagged.body) {
+                        lastTagged.body = comm.value;
                     }
+                    else {
+                        lastTagged.body = '\n' + comm.value;
+                    }
+                    //update src
+                    lastTagged.commentSrc.end = comm.end;
+                    lastTagged.commentSrc.value += '\n' + comm.value;
                 }
-                accum.canAppend = true;
-                return accum;
-            }
-            default: {
-                throw new Error("Unknown comment type");
             }
         }
-    }, {
-        tagged: [],
-        canAppend: false
-    });
+    }
     return tagged;
+}
+function parseComments(fileName, content) {
+    switch ((0,external_path_.extname)(fileName)) {
+        case 'js': return parse(content);
+        case 'ts': return parse(content, ['typescript']);
+        case 'jsx': return parse(content, ['jsx']);
+        case 'tsx': return parse(content, ['typescript', 'jsx']);
+        default: {
+            console.warn(`No parser found for ${fileName}`);
+            return [];
+        }
+    }
 }
 
 
@@ -25188,7 +25256,7 @@ var util = __nccwpck_require__(3430);
 const exec = (0,external_util_.promisify)(external_child_process_namespaceObject.exec);
 async function gitChangedFiles(before, after) {
     const { stdout } = await exec(`git diff --name-only ${before}...${after}`);
-    return (0,util/* splitLines */.u)(stdout);
+    return (0,util/* splitLines */.uq)(stdout);
 }
 async function readFileAtCommit(commitSHA, filePath) {
     const { stdout } = await exec(`git show ${commitSHA}:${filePath}`);
@@ -25206,8 +25274,8 @@ __nccwpck_require__.a(module, async (__webpack_handle_async_dependencies__) => {
 /* harmony import */ var _actions_core__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__nccwpck_require__.n(_actions_core__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _actions_github__WEBPACK_IMPORTED_MODULE_1__ = __nccwpck_require__(5027);
 /* harmony import */ var _actions_github__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__nccwpck_require__.n(_actions_github__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _comments__WEBPACK_IMPORTED_MODULE_2__ = __nccwpck_require__(7156);
-/* harmony import */ var _git__WEBPACK_IMPORTED_MODULE_3__ = __nccwpck_require__(2831);
+/* harmony import */ var _git__WEBPACK_IMPORTED_MODULE_2__ = __nccwpck_require__(2831);
+/* harmony import */ var _CommentResolver__WEBPACK_IMPORTED_MODULE_3__ = __nccwpck_require__(4941);
 
 
 
@@ -25220,17 +25288,14 @@ const { default_branch } = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.
 const branch = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.ref.replace('refs/heads/', '');
 console.log('branch:', branch);
 console.log('base is default branch:', default_branch === branch);
-const files = await (0,_git__WEBPACK_IMPORTED_MODULE_3__/* .gitChangedFiles */ .j)(before, after);
-//TODO: paralellize this
-for (const file of files) {
-    if (!file.endsWith('.ts'))
-        continue;
-    const beforeContent = await (0,_git__WEBPACK_IMPORTED_MODULE_3__/* .readFileAtCommit */ .d)(before, file);
-    const afterContent = await (0,_git__WEBPACK_IMPORTED_MODULE_3__/* .readFileAtCommit */ .d)(after, file);
-    console.log(file);
-    console.log("before", (0,_comments__WEBPACK_IMPORTED_MODULE_2__/* .parseJavascriptCommentTags */ .w)(beforeContent, ['todo']));
-    console.log("after", (0,_comments__WEBPACK_IMPORTED_MODULE_2__/* .parseJavascriptCommentTags */ .w)(afterContent, ['todo']));
-}
+const beforeFiles = await (0,_git__WEBPACK_IMPORTED_MODULE_2__/* .gitChangedFiles */ .j)(before, after);
+const beforeResolver = new _CommentResolver__WEBPACK_IMPORTED_MODULE_3__/* .CommentResolver */ .w(before, beforeFiles, ['todo']);
+const beforeTags = await beforeResolver.resolve();
+const afterFiles = await (0,_git__WEBPACK_IMPORTED_MODULE_2__/* .gitChangedFiles */ .j)(before, after);
+const afterResolver = new _CommentResolver__WEBPACK_IMPORTED_MODULE_3__/* .CommentResolver */ .w(before, afterFiles, ['todo']);
+const afterTags = await afterResolver.resolve();
+console.log(beforeTags);
+console.log(afterTags);
 
 __webpack_handle_async_dependencies__();
 }, 1);
@@ -25241,8 +25306,9 @@ __webpack_handle_async_dependencies__();
 /***/ ((__unused_webpack_module, __webpack_exports__, __nccwpck_require__) => {
 
 /* harmony export */ __nccwpck_require__.d(__webpack_exports__, {
-/* harmony export */   "u": () => (/* binding */ splitLines),
-/* harmony export */   "Z": () => (/* binding */ last)
+/* harmony export */   "uq": () => (/* binding */ splitLines),
+/* harmony export */   "Z$": () => (/* binding */ last),
+/* harmony export */   "xH": () => (/* binding */ flatten)
 /* harmony export */ });
 function splitLines(input) {
     return input.split(/(\r\n|\r|\n)/);
@@ -25251,6 +25317,13 @@ function last(arr) {
     if (arr.length > 0)
         return arr[arr.length - 1];
     return undefined;
+}
+function flatten(arr) {
+    const flattened = [];
+    for (const item of arr) {
+        flattened.push(...item);
+    }
+    return flattened;
 }
 
 

@@ -1,7 +1,7 @@
-import {} from '@actions/core'
+import {  } from '@actions/core'
 import { context } from '@actions/github'
-import { parseJavascriptCommentTags } from './comments'
-import { gitChangedFiles, readFileAtCommit } from './git'
+import { gitChangedFiles } from './git'
+import { CommentResolver } from './CommentResolver'
 
 //TODO: test todo
 console.dir(context, {depth: null, colors: false})
@@ -14,13 +14,13 @@ const branch = context.ref.replace('refs/heads/', '')
 console.log('branch:', branch)
 console.log('base is default branch:', default_branch === branch)
 
-const files = await gitChangedFiles(before, after)
-//TODO: paralellize this
-for(const file of files) {
-    if(!file.endsWith('.ts')) continue
-    const beforeContent = await readFileAtCommit(before, file)
-    const afterContent = await readFileAtCommit(after, file)
-    console.log(file)
-    console.log("before", parseJavascriptCommentTags(beforeContent, ['todo']))
-    console.log("after", parseJavascriptCommentTags(afterContent, ['todo']))
-}
+const beforeFiles = await gitChangedFiles(before, after)
+const beforeResolver = new CommentResolver(before, beforeFiles, ['todo'])
+const beforeTags = await beforeResolver.resolve()
+
+const afterFiles = await gitChangedFiles(before, after)
+const afterResolver = new CommentResolver(before, afterFiles, ['todo'])
+const afterTags = await afterResolver.resolve()
+
+console.log(beforeTags)
+console.log(afterTags)

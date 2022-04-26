@@ -1,6 +1,7 @@
 {
     "extends": "@tsconfig/node16-strictest-esm",
     "compilerOptions": {
+        "exactOptionalPropertyTypes": false,
         "moduleResolution": "node",
         "outDir": "./dist"
     }

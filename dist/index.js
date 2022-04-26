@@ -25218,12 +25218,14 @@ console.dir(_actions_github__WEBPACK_IMPORTED_MODULE_1__.context, { depth: null,
 //these are not typed unfortunately
 const { before, after } = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload;
 const { default_branch } = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.repository;
-const branch = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.ref.replace('/refs/heads/', '');
+const branch = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.ref.replace('refs/heads/', '');
 console.log('branch:', branch);
 console.log('base is default branch:', default_branch === branch);
 const files = await (0,_git__WEBPACK_IMPORTED_MODULE_3__/* .gitChangedFiles */ .j)(before, after);
 //TODO: paralellize this
 for (const file of files) {
+    if (!file.endsWith('.ts'))
+        continue;
     const content = await (0,_git__WEBPACK_IMPORTED_MODULE_3__/* .readFileAtCommit */ .d)(after, file);
     const tagged = (0,_comments__WEBPACK_IMPORTED_MODULE_2__/* .parseJavascriptCommentTags */ .w)(content, ['todo']);
     console.log(file, tagged);

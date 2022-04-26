@@ -10,13 +10,14 @@ console.dir(context, {depth: null, colors: false})
 const {before, after} = context.payload
 const {default_branch} = context.payload.repository!
 
-const branch = context.ref.replace('/refs/heads/', '')
+const branch = context.ref.replace('refs/heads/', '')
 console.log('branch:', branch)
 console.log('base is default branch:', default_branch === branch)
 
 const files = await gitChangedFiles(before, after)
 //TODO: paralellize this
 for(const file of files) {
+    if(!file.endsWith('.ts')) continue
     const content = await readFileAtCommit(after, file)
     const tagged = parseJavascriptCommentTags(content, ['todo'])
     console.log(file, tagged)

@@ -20,7 +20,6 @@ export class CommentResolver {
             const fileContent = await readFileAtCommit(this.#commitSHA, fileName)
             if(!fileContent) return []
             const comments = parseComments(fileName, fileContent)
-            console.log(comments.length + "comments in file ", fileName)
             return parseTagged(fileName, comments, this.#tags)
         }))
 
@@ -54,6 +53,7 @@ function parseTag(value: string, tags: string[]): Tag|undefined {
     const len = m.reduce((t, s) => {
         //sometimes matches has undefined in it, not sure why.
         if(s === undefined) return t
+        console.log(s)
         return t + s.length
     }, 0)
     value = value.slice(len)
@@ -96,8 +96,6 @@ function parseTagged(fileName: string, comments: Comment[], tags: string[]): Tag
         } else {
             const parsed = parseTag(comm.value.trim(), tags)
             if(parsed) {
-                console.log("parsed tag")
-                console.log(parsed)
                 tagged.push({
                     tag: parsed.name,
                     title: parsed.value,

@@ -25133,7 +25133,6 @@ class CommentResolver {
             if (!fileContent)
                 return [];
             const comments = parseComments(fileName, fileContent);
-            console.log(comments.length + "comments in file ", fileName);
             return parseTagged(fileName, comments, this.#tags);
         }));
         return (0,util/* flatten */.xH)(commentsPerFile);
@@ -25161,6 +25160,7 @@ function parseTag(value, tags) {
         //sometimes matches has undefined in it, not sure why.
         if (s === undefined)
             return t;
+        console.log(s);
         return t + s.length;
     }, 0);
     value = value.slice(len);
@@ -25200,8 +25200,6 @@ function parseTagged(fileName, comments, tags) {
         else {
             const parsed = parseTag(comm.value.trim(), tags);
             if (parsed) {
-                console.log("parsed tag");
-                console.log(parsed);
                 tagged.push({
                     tag: parsed.name,
                     title: parsed.value,

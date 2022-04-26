@@ -90,6 +90,8 @@ function parseTagged(fileName: string, comments: Comment[], tags: string[]): Tag
         } else {
             const parsed = parseTag(comm.value.trim(), tags)
             if(parsed) {
+                console.log("parsed tag")
+                console.log(parsed)
                 tagged.push({
                     tag: parsed.name,
                     title: parsed.value,

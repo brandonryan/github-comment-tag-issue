@@ -25157,7 +25157,10 @@ function parseTag(value, tags) {
     if (!name || !tags.includes(name))
         return;
     //remove our match from value
-    const len = m.reduce((t, s) => t + s.length, 0);
+    const len = m.reduce((t, s) => {
+        console.log(s);
+        return t + s.length;
+    }, 0);
     value = value.slice(len);
     //return bare tagged
     if (!issue) {

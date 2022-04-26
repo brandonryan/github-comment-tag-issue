@@ -9,5 +9,7 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
+      - name: List log
+        run: git log -n4
       - name: Self
         uses: ./

@@ -25156,13 +25156,7 @@ function parseTag(value, tags) {
     if (!name || !tags.includes(name))
         return;
     //remove our match from value
-    const len = m.reduce((t, s, i) => {
-        //sometimes matches has undefined in it, not sure why.
-        if (s === undefined)
-            return t;
-        console.log(i, s);
-        return t + s.length;
-    }, 0);
+    const len = m[0].length;
     value = value.slice(len);
     //return bare tagged
     if (!issue) {

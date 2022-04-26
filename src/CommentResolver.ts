@@ -106,7 +106,7 @@ function parseTagged(fileName: string, comments: Comment[], tags: string[]): Tag
                     if(!lastTagged.body) {
                         lastTagged.body = comm.value
                     } else {
-                        lastTagged.body = '\n' + comm.value
+                        lastTagged.body += '\n' + comm.value
                     }
                     //update src
                     lastTagged.commentSrc.end = comm.end

@@ -25211,7 +25211,7 @@ function parseTagged(fileName, comments, tags) {
                         lastTagged.body = comm.value;
                     }
                     else {
-                        lastTagged.body = '\n' + comm.value;
+                        lastTagged.body += '\n' + comm.value;
                     }
                     //update src
                     lastTagged.commentSrc.end = comm.end;
@@ -25305,9 +25305,11 @@ files = files.filter(file => file.startsWith('src/'));
 console.log("files", files);
 const beforeResolver = new _CommentResolver__WEBPACK_IMPORTED_MODULE_3__/* .CommentResolver */ .w(before, files, ['todo']);
 const beforeTags = await beforeResolver.resolve();
-const afterResolver = new _CommentResolver__WEBPACK_IMPORTED_MODULE_3__/* .CommentResolver */ .w(before, files, ['todo']);
+const afterResolver = new _CommentResolver__WEBPACK_IMPORTED_MODULE_3__/* .CommentResolver */ .w(after, files, ['todo']);
 const afterTags = await afterResolver.resolve();
+console.log("before");
 console.log(beforeTags);
+console.log("after");
 console.log(afterTags);
 
 __webpack_handle_async_dependencies__();

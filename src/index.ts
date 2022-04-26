@@ -23,8 +23,10 @@ console.log("files", files)
 const beforeResolver = new CommentResolver(before, files, ['todo'])
 const beforeTags = await beforeResolver.resolve()
 
-const afterResolver = new CommentResolver(before, files, ['todo'])
+const afterResolver = new CommentResolver(after, files, ['todo'])
 const afterTags = await afterResolver.resolve()
 
+console.log("before")
 console.log(beforeTags)
+console.log("after")
 console.log(afterTags)

@@ -73,8 +73,10 @@ function shouldAppend(base: Comment, current: Comment) {
     return true
 }
 
+//@ts-ignore
 function parseBlockTags(blockComment: Comment, tags: string[]): TaggedComment[] {
-    console.log(blockComment, tags)
+    // console.log(blockComment, tags)
+    
     return []
 }
 

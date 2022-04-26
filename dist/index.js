@@ -25179,8 +25179,9 @@ function shouldAppend(base, current) {
         return false;
     return true;
 }
+//@ts-ignore
 function parseBlockTags(blockComment, tags) {
-    console.log(blockComment, tags);
+    // console.log(blockComment, tags)
     return [];
 }
 function parseTagged(fileName, comments, tags) {
@@ -25287,8 +25288,6 @@ __nccwpck_require__.a(module, async (__webpack_handle_async_dependencies__) => {
 
 
 
-//TODO: test todo
-console.dir(_actions_github__WEBPACK_IMPORTED_MODULE_1__.context, { depth: null, colors: false });
 //these are not typed unfortunately
 const { before, after } = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload;
 const { default_branch } = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.repository;

@@ -43,6 +43,7 @@ interface Tag {
     value: string
 }
 function parseTag(value: string, tags: string[]): Tag|undefined {
+    value = value.trim()
     const reg = regexForTagParse(tags)
     const m = value.toLocaleLowerCase().match(reg)
     if(m === null || !m.groups) return
@@ -51,7 +52,7 @@ function parseTag(value: string, tags: string[]): Tag|undefined {
     
     //remove our match from value
     const len = m[0]!.length
-    value = value.slice(len)
+    value = value.slice(len).trim()
     //return bare tagged
     if(!issue) {
         return {name, value}
@@ -89,7 +90,7 @@ function parseTagged(fileName: string, comments: Comment[], tags: string[]): Tag
         if(comm.block) {
             tagged.push(...parseBlockTags(comm, tags))
         } else {
-            const parsed = parseTag(comm.value.trim(), tags)
+            const parsed = parseTag(comm.value, tags)
             if(parsed) {
                 tagged.push({
                     tag: parsed.name,

@@ -5,6 +5,7 @@ import { CommentResolver } from './CommentResolver'
 
 //TODO: better logging
 //with a body!
+//and more...
 
 //these are not typed unfortunately
 const {before, after} = context.payload

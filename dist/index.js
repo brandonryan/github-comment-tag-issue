@@ -25172,6 +25172,7 @@ function parseTag(value, tags) {
         //TODO: issue a warning or error stating that we could not parse the issue number.
         return;
     }
+    console.log(name, value, issueNum);
     return { name, value, issue: issueNum };
 }
 function shouldAppend(base, current) {

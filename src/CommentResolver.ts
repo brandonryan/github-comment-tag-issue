@@ -68,6 +68,8 @@ function parseTag(value: string, tags: string[]): Tag|undefined {
         return
     }
 
+    console.log(name, value, issueNum)
+
     return {name, value, issue: issueNum}
 }
 

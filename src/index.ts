@@ -3,6 +3,9 @@ import { context } from '@actions/github'
 import { gitChangedFiles } from './git'
 import { CommentResolver } from './CommentResolver'
 
+//TODO: better logging
+//with a body!
+
 //these are not typed unfortunately
 const {before, after} = context.payload
 const {default_branch} = context.payload.repository!

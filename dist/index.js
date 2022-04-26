@@ -25177,7 +25177,7 @@ function shouldAppend(base, current) {
     console.log(base, current);
     if (base.block)
         return false;
-    if (base.start.line !== current.start.line + 1)
+    if (base.start.line + 1 !== current.start.line)
         return false;
     if (base.start.column !== current.start.column)
         return false;

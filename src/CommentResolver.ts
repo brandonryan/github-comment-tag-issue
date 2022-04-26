@@ -70,6 +70,8 @@ function parseTag(value: string, tags: string[]): Tag|undefined {
 }
 
 function shouldAppend(base: Comment, current: Comment) {
+    console.log("checking should append")
+    console.log(base, current)
     if(base.block) return false
     if(base.start.line !== current.start.line+1) return false
     if(base.start.column !== current.start.column) return false

@@ -25173,6 +25173,8 @@ function parseTag(value, tags) {
     return { name, value, issue: issueNum };
 }
 function shouldAppend(base, current) {
+    console.log("checking should append");
+    console.log(base, current);
     if (base.block)
         return false;
     if (base.start.line !== current.start.line + 1)
@@ -25292,7 +25294,7 @@ __nccwpck_require__.a(module, async (__webpack_handle_async_dependencies__) => {
 
 //TODO: better logging
 //with a body!
-//and more...
+//and more.
 //these are not typed unfortunately
 const { before, after } = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload;
 const { default_branch } = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.payload.repository;

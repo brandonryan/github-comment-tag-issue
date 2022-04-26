@@ -19,7 +19,7 @@ function shouldAppendLast(last: CommentLine, current: CommentLine) {
 //tags are assumed to be lower case
 function findTag(value: string, tags: string[]): string | undefined {
     for(const tag of tags) {
-        if (value.toLocaleLowerCase().startsWith(tag)) {
+        if (value.toLocaleLowerCase().startsWith(tag + ':')) {
             return tag
         }
     }
@@ -52,10 +52,9 @@ export function parseJavascriptCommentTags(input: string, tags: string[]) {
                 const value = comm.value.trim()
                 const tag = findTag(value, tags)
                 if (tag !== undefined) {
-                    //TODO: return the right value
                     tagged.push({
                         tag,
-                        title: value,
+                        title: value.substring(tag.length+1),
                         body: '',
                         end: comm.loc.end,
                         start: comm.loc.start

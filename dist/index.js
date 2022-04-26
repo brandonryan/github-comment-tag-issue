@@ -25095,7 +25095,7 @@ function shouldAppendLast(last, current) {
 //tags are assumed to be lower case
 function findTag(value, tags) {
     for (const tag of tags) {
-        if (value.toLocaleLowerCase().startsWith(tag)) {
+        if (value.toLocaleLowerCase().startsWith(tag + ':')) {
             return tag;
         }
     }
@@ -25125,10 +25125,9 @@ function parseJavascriptCommentTags(input, tags) {
                 const value = comm.value.trim();
                 const tag = findTag(value, tags);
                 if (tag !== undefined) {
-                    //TODO: return the right value
                     tagged.push({
                         tag,
-                        title: value,
+                        title: value.substring(tag.length + 1),
                         body: '',
                         end: comm.loc.end,
                         start: comm.loc.start
@@ -25226,9 +25225,11 @@ const files = await (0,_git__WEBPACK_IMPORTED_MODULE_3__/* .gitChangedFiles */ .
 for (const file of files) {
     if (!file.endsWith('.ts'))
         continue;
-    const content = await (0,_git__WEBPACK_IMPORTED_MODULE_3__/* .readFileAtCommit */ .d)(after, file);
-    const tagged = (0,_comments__WEBPACK_IMPORTED_MODULE_2__/* .parseJavascriptCommentTags */ .w)(content, ['todo']);
-    console.log(file, tagged);
+    const beforeContent = await (0,_git__WEBPACK_IMPORTED_MODULE_3__/* .readFileAtCommit */ .d)(before, file);
+    const afterContent = await (0,_git__WEBPACK_IMPORTED_MODULE_3__/* .readFileAtCommit */ .d)(after, file);
+    console.log(file);
+    console.log("before", (0,_comments__WEBPACK_IMPORTED_MODULE_2__/* .parseJavascriptCommentTags */ .w)(beforeContent, ['todo']));
+    console.log("after", (0,_comments__WEBPACK_IMPORTED_MODULE_2__/* .parseJavascriptCommentTags */ .w)(afterContent, ['todo']));
 }
 
 __webpack_handle_async_dependencies__();

@@ -18,7 +18,9 @@ const files = await gitChangedFiles(before, after)
 //TODO: paralellize this
 for(const file of files) {
     if(!file.endsWith('.ts')) continue
-    const content = await readFileAtCommit(after, file)
-    const tagged = parseJavascriptCommentTags(content, ['todo'])
-    console.log(file, tagged)
+    const beforeContent = await readFileAtCommit(before, file)
+    const afterContent = await readFileAtCommit(after, file)
+    console.log(file)
+    console.log("before", parseJavascriptCommentTags(beforeContent, ['todo']))
+    console.log("after", parseJavascriptCommentTags(afterContent, ['todo']))
 }

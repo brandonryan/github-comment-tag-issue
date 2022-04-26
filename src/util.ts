@@ -1,5 +1,5 @@
 export function splitLines(input: string): string[] {
-    return input.split(/(\r\n|\r|\n)/)
+    return input.split(/\r\n|\n|\r/)
 }
 
 export function last<T>(arr: T[]): T|undefined {

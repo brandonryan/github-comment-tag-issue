@@ -25259,7 +25259,7 @@ var util = __nccwpck_require__(3430);
 const exec = (0,external_util_.promisify)(external_child_process_namespaceObject.exec);
 async function gitChangedFiles(before, after) {
     const { stdout } = await exec(`git diff --name-only ${before}...${after}`);
-    return (0,util/* splitLines */.uq)(stdout);
+    return (0,util/* splitLines */.uq)(stdout.trim());
 }
 async function readFileAtCommit(commitSHA, filePath) {
     try {
@@ -25270,6 +25270,8 @@ async function readFileAtCommit(commitSHA, filePath) {
         return undefined;
     }
 }
+//c3220faa3c60d91a966ecefe8ea05b7a638a0766
+//1bfc8b533b7b7c63d8011e04cf9207c118714633
 
 
 /***/ }),
@@ -25319,7 +25321,7 @@ __webpack_handle_async_dependencies__();
 /* harmony export */   "xH": () => (/* binding */ flatten)
 /* harmony export */ });
 function splitLines(input) {
-    return input.split(/(\r\n|\r|\n)/);
+    return input.split(/\r\n|\n|\r/);
 }
 function last(arr) {
     if (arr.length > 0)

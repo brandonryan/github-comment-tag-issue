@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "packageManager": "pnpm@6.32.10",
   "description": "Github action to create issues from comment tags",
-  "main": "index.ts",
+  "main": "src/index.ts",
   "type": "module",
   "scripts": {
     "prepare": "husky install",
@@ -18,6 +18,7 @@
   "author": "Brandon Ryan",
   "license": "MIT",
   "devDependencies": {
+    "@babel/types": "^7.17.0",
     "@tsconfig/node16-strictest-esm": "^1.0.1",
     "@types/node": "^17.0.27",
     "@vercel/ncc": "^0.33.4",
@@ -25,8 +26,9 @@
     "typescript": "^4.6.3"
   },
   "dependencies": {
-    "@actions/github": "^5.0.1",
     "@actions/core": "^1.7.0",
-    "@actions/exec": "^1.1.1"
+    "@actions/exec": "^1.1.1",
+    "@actions/github": "^5.0.1",
+    "@babel/parser": "^7.17.9"
   }
 }

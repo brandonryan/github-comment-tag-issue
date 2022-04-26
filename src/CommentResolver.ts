@@ -20,6 +20,7 @@ export class CommentResolver {
             const fileContent = await readFileAtCommit(this.#commitSHA, fileName)
             if(!fileContent) return []
             const comments = parseComments(fileName, fileContent)
+            console.log(comments.length + "comments in file ", fileName)
             return parseTagged(fileName, comments, this.#tags)
         }))
 

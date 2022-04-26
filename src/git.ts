@@ -17,6 +17,3 @@ export async function readFileAtCommit(commitSHA: string, filePath: string): Pro
         return undefined
     }
 }
-
-//c3220faa3c60d91a966ecefe8ea05b7a638a0766
-//1bfc8b533b7b7c63d8011e04cf9207c118714633

@@ -25133,6 +25133,7 @@ class CommentResolver {
             if (!fileContent)
                 return [];
             const comments = parseComments(fileName, fileContent);
+            console.log(comments.length + "comments in file ", fileName);
             return parseTagged(fileName, comments, this.#tags);
         }));
         return (0,util/* flatten */.xH)(commentsPerFile);
@@ -25270,8 +25271,6 @@ async function readFileAtCommit(commitSHA, filePath) {
         return undefined;
     }
 }
-//c3220faa3c60d91a966ecefe8ea05b7a638a0766
-//1bfc8b533b7b7c63d8011e04cf9207c118714633
 
 
 /***/ }),

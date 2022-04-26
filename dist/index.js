@@ -25175,7 +25175,7 @@ function parseTag(value, tags) {
 function shouldAppend(base, current) {
     if (base.block)
         return false;
-    if (base.start.line + 1 !== current.start.line)
+    if (base.end.line + 1 !== current.start.line)
         return false;
     if (base.start.column !== current.start.column)
         return false;

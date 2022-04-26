@@ -71,7 +71,7 @@ function parseTag(value: string, tags: string[]): Tag|undefined {
 
 function shouldAppend(base: Comment, current: Comment) {
     if(base.block) return false
-    if(base.start.line+1 !== current.start.line) return false
+    if(base.end.line+1 !== current.start.line) return false
     if(base.start.column !== current.start.column) return false
     return true
 }

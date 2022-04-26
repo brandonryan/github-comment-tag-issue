@@ -25294,11 +25294,11 @@ const { default_branch } = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.
 const branch = _actions_github__WEBPACK_IMPORTED_MODULE_1__.context.ref.replace('refs/heads/', '');
 console.log('branch:', branch);
 console.log('base is default branch:', default_branch === branch);
-const beforeFiles = await (0,_git__WEBPACK_IMPORTED_MODULE_2__/* .gitChangedFiles */ .j)(before, after);
-const beforeResolver = new _CommentResolver__WEBPACK_IMPORTED_MODULE_3__/* .CommentResolver */ .w(before, beforeFiles, ['todo']);
+const files = await (0,_git__WEBPACK_IMPORTED_MODULE_2__/* .gitChangedFiles */ .j)(before, after);
+console.log("files", files);
+const beforeResolver = new _CommentResolver__WEBPACK_IMPORTED_MODULE_3__/* .CommentResolver */ .w(before, files, ['todo']);
 const beforeTags = await beforeResolver.resolve();
-const afterFiles = await (0,_git__WEBPACK_IMPORTED_MODULE_2__/* .gitChangedFiles */ .j)(before, after);
-const afterResolver = new _CommentResolver__WEBPACK_IMPORTED_MODULE_3__/* .CommentResolver */ .w(before, afterFiles, ['todo']);
+const afterResolver = new _CommentResolver__WEBPACK_IMPORTED_MODULE_3__/* .CommentResolver */ .w(before, files, ['todo']);
 const afterTags = await afterResolver.resolve();
 console.log(beforeTags);
 console.log(afterTags);

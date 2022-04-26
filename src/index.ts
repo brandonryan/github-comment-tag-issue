@@ -11,12 +11,13 @@ const branch = context.ref.replace('refs/heads/', '')
 console.log('branch:', branch)
 console.log('base is default branch:', default_branch === branch)
 
-const beforeFiles = await gitChangedFiles(before, after)
-const beforeResolver = new CommentResolver(before, beforeFiles, ['todo'])
+const files = await gitChangedFiles(before, after)
+console.log("files", files)
+
+const beforeResolver = new CommentResolver(before, files, ['todo'])
 const beforeTags = await beforeResolver.resolve()
 
-const afterFiles = await gitChangedFiles(before, after)
-const afterResolver = new CommentResolver(before, afterFiles, ['todo'])
+const afterResolver = new CommentResolver(before, files, ['todo'])
 const afterTags = await afterResolver.resolve()
 
 console.log(beforeTags)

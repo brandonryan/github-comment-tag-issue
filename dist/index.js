@@ -25158,7 +25158,9 @@ function parseTag(value, tags) {
         return;
     //remove our match from value
     const len = m.reduce((t, s) => {
-        console.log(s);
+        //sometimes matches has undefined in it, not sure why.
+        if (s === undefined)
+            return t;
         return t + s.length;
     }, 0);
     value = value.slice(len);

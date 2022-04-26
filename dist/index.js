@@ -25221,10 +25221,10 @@ function parseTagged(fileName, comments, tags) {
 }
 function parseComments(fileName, content) {
     switch ((0,external_path_.extname)(fileName)) {
-        case 'js': return parse(content);
-        case 'ts': return parse(content, ['typescript']);
-        case 'jsx': return parse(content, ['jsx']);
-        case 'tsx': return parse(content, ['typescript', 'jsx']);
+        case '.js': return parse(content);
+        case '.ts': return parse(content, ['typescript']);
+        case '.jsx': return parse(content, ['jsx']);
+        case '.tsx': return parse(content, ['typescript', 'jsx']);
         default: {
             console.warn(`No parser found for ${fileName}`);
             return [];

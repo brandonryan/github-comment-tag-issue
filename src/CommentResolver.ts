@@ -116,10 +116,10 @@ function parseTagged(fileName: string, comments: Comment[], tags: string[]): Tag
 
 function parseComments(fileName: string, content: string): Comment[] {
     switch(extname(fileName)) {
-        case 'js': return parseJavascript(content)
-        case 'ts': return parseJavascript(content, ['typescript'])
-        case 'jsx': return parseJavascript(content, ['jsx'])
-        case 'tsx': return parseJavascript(content, ['typescript', 'jsx'])
+        case '.js': return parseJavascript(content)
+        case '.ts': return parseJavascript(content, ['typescript'])
+        case '.jsx': return parseJavascript(content, ['jsx'])
+        case '.tsx': return parseJavascript(content, ['typescript', 'jsx'])
         default: {
             console.warn(`No parser found for ${fileName}`)
             return []

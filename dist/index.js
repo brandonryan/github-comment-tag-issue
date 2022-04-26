@@ -25145,15 +25145,12 @@ class CommentResolver {
     }
 }
 function regexForTagParse(tags) {
-    //REGEX: ^(?<tag>todo|fixme)(?<issue> \[#\d+\])?:
-    return new RegExp(`^(?<tag>${tags.join('|')})(?<issue> \\[#\\d+\\])?:`);
+    //REGEX: ^(?<name>todo|fixme)(?<issue> \[#\d+\])?:
+    return new RegExp(`^(?<name>${tags.join('|')})(?<issue> \\[#\\d+\\])?:`);
 }
 function parseTag(value, tags) {
     const reg = regexForTagParse(tags);
     const m = value.toLocaleLowerCase().match(reg);
-    console.log(value);
-    console.log(m);
-    console.log(m?.groups);
     if (m === null || !m.groups)
         return;
     const { name, issue } = m.groups;

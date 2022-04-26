@@ -50,10 +50,10 @@ function parseTag(value: string, tags: string[]): Tag|undefined {
     if(!name || !tags.includes(name)) return
 
     //remove our match from value
-    const len = m.reduce((t, s) => {
+    const len = m.reduce((t, s, i) => {
         //sometimes matches has undefined in it, not sure why.
         if(s === undefined) return t
-        console.log(s)
+        console.log(i, s)
         return t + s.length
     }, 0)
     value = value.slice(len)

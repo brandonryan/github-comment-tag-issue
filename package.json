@@ -1,7 +1,7 @@
 {
   "name": "comment-tag-issue",
   "version": "1.0.0",
-  "packageManager": "pnpm@6.32.10",
+  "packageManager": "pnpm@6.32.11",
   "description": "Github action to create issues from comment tags",
   "main": "src/index.ts",
   "type": "module",

@@ -4,8 +4,8 @@ author: Brandon Ryan
 runs:
   using: composite
   steps:
-    - using: node16
+    - uses: node16
       main: dist/index.js
-    - using: stefanzweifel/git-auto-commit-action@v4
+    - uses: stefanzweifel/git-auto-commit-action@v4
       with:
         commit_message: Add issue numbers to tagged comments

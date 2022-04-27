@@ -25290,8 +25290,8 @@ __nccwpck_require__.a(module, async (__webpack_handle_async_dependencies__) => {
 
 
 
-const octokit = (0,_actions_github__WEBPACK_IMPORTED_MODULE_1__.getOctokit)((0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('githubToken'));
 console.log(process.env);
+const octokit = (0,_actions_github__WEBPACK_IMPORTED_MODULE_1__.getOctokit)((0,_actions_core__WEBPACK_IMPORTED_MODULE_0__.getInput)('githubToken'));
 //TODO: better logging
 //with a body!
 //and an even bigger one

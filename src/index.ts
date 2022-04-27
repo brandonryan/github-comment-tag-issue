@@ -4,9 +4,9 @@ import { gitChangedFiles } from './git'
 import { CommentResolver } from './CommentResolver'
 import type { TaggedComment } from './types'
 
-const octokit = getOctokit(getInput('githubToken'))
-
 console.log(process.env)
+
+const octokit = getOctokit(getInput('githubToken'))
 
 //TODO: better logging
 //with a body!

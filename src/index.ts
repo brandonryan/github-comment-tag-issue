@@ -61,7 +61,8 @@ for(const tag of beforeTags) {
 
 for(const tag of unassignedComments) {
     const created = await octokit.rest.issues.create(githubIssueFromTaggedComment(tag))
-    console.log("issue number is: " + created.data)
+    console.log("issue number is: ")
+    console.dir(created.data, {depth: null})
 }
 for(const tag of updatedComments) {
     await octokit.rest.issues.update({

@@ -24416,14 +24416,14 @@ for (const tag of deletedComments) {
 unassignedComments.reverse();
 for (const tag of unassignedComments) {
     console.dir(tag, { depth: null });
-    let insertIndex = tag.commentSrc.value.indexOf(tag.tag);
+    let insertIndex = tag.commentSrc.value.toLocaleLowerCase().indexOf(tag.tag);
     if (insertIndex === -1)
         throw new Error("assert this should never hapen");
-    insertIndex += tag.tag.length + 1;
+    insertIndex += tag.tag.length;
     const contents = await (0,fs_promises__WEBPACK_IMPORTED_MODULE_3__.readFile)(tag.fileName, 'utf-8');
     const contentsBefore = contents.slice(0, insertIndex);
     const contentsAfter = contents.slice(insertIndex);
-    await (0,fs_promises__WEBPACK_IMPORTED_MODULE_3__.writeFile)(tag.fileName, `${contentsBefore}[${tag.issueNumber}]${contentsAfter}`);
+    await (0,fs_promises__WEBPACK_IMPORTED_MODULE_3__.writeFile)(tag.fileName, `${contentsBefore} [${tag.issueNumber}]${contentsAfter}`);
 }
 function taggedCommentsEqual(tag1, tag2) {
     return tag1.body === tag2.body &&

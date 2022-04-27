@@ -80,14 +80,14 @@ for(const tag of deletedComments) {
 unassignedComments.reverse()
 for(const tag of unassignedComments) {
     console.dir(tag, {depth: null})
-    let insertIndex = tag.commentSrc.value.indexOf(tag.tag)
+    let insertIndex = tag.commentSrc.value.toLocaleLowerCase().indexOf(tag.tag)
     if(insertIndex === -1) throw new Error("assert this should never hapen")
-    insertIndex += tag.tag.length+1
+    insertIndex += tag.tag.length
 
     const contents = await readFile(tag.fileName, 'utf-8')
     const contentsBefore = contents.slice(0, insertIndex)
     const contentsAfter = contents.slice(insertIndex)
-    await writeFile(tag.fileName, `${contentsBefore}[${tag.issueNumber}]${contentsAfter}`)
+    await writeFile(tag.fileName, `${contentsBefore} [${tag.issueNumber}]${contentsAfter}`)
 }
 
 function taggedCommentsEqual(tag1: TaggedComment, tag2: TaggedComment) {

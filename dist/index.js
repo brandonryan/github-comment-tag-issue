@@ -24340,7 +24340,6 @@ __nccwpck_require__.a(module, async (__webpack_handle_async_dependencies__) => {
 
 
 
-console.log(process.env);
 const octokit = (0,_actions_github__WEBPACK_IMPORTED_MODULE_0__.getOctokit)(process.env['GITHUB_TOKEN']);
 //TODO: better logging
 //with a body!
@@ -24394,7 +24393,7 @@ for (const tag of beforeTags) {
 }
 for (const tag of unassignedComments) {
     const created = await octokit.rest.issues.create(githubIssueFromTaggedComment(tag));
-    console.log("issue number is: " + created.data.id);
+    console.log("issue number is: " + created.data);
 }
 for (const tag of updatedComments) {
     await octokit.rest.issues.update({

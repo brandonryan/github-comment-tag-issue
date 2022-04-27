@@ -4,8 +4,6 @@ import { gitChangedFiles } from './git'
 import { CommentResolver } from './CommentResolver'
 import type { TaggedComment } from './types'
 
-console.log(process.env)
-
 const octokit = getOctokit(process.env['GITHUB_TOKEN']!)
 
 //TODO: better logging
@@ -63,7 +61,7 @@ for(const tag of beforeTags) {
 
 for(const tag of unassignedComments) {
     const created = await octokit.rest.issues.create(githubIssueFromTaggedComment(tag))
-    console.log("issue number is: " + created.data.id)
+    console.log("issue number is: " + created.data)
 }
 for(const tag of updatedComments) {
     await octokit.rest.issues.update({

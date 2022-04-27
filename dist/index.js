@@ -24415,6 +24415,7 @@ for (const tag of deletedComments) {
 //do this in reverse order so we dont have to worry about index offset while inserting.
 unassignedComments.reverse();
 for (const tag of unassignedComments) {
+    console.dir(tag, { depth: null });
     let insertIndex = tag.commentSrc.value.indexOf(tag.tag);
     if (insertIndex === -1)
         throw new Error("assert this should never hapen");

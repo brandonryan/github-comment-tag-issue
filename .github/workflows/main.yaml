@@ -14,4 +14,6 @@ jobs:
       - name: List log
         run: git log -n4
       - name: Self
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         uses: ./

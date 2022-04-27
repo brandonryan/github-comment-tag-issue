@@ -1,4 +1,4 @@
-import { getInput } from '@actions/core'
+// import { getInput } from '@actions/core'
 import { context, getOctokit } from '@actions/github'
 import { gitChangedFiles } from './git'
 import { CommentResolver } from './CommentResolver'
@@ -6,7 +6,7 @@ import type { TaggedComment } from './types'
 
 console.log(process.env)
 
-const octokit = getOctokit(getInput('githubToken'))
+const octokit = getOctokit(process.env['GITHUB_TOKEN']!)
 
 //TODO: better logging
 //with a body!

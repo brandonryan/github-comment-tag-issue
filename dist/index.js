@@ -24324,6 +24324,9 @@ async function readFileAtCommit(commitSHA, filePath) {
         return undefined;
     }
 }
+// export async function commitAllChanges() {
+//     await exec(`git commit -a --author="Github Action Bot <>" -m "Assign tagged comment issue numbers"`)
+// }
 
 
 /***/ }),
@@ -24336,7 +24339,10 @@ __nccwpck_require__.a(module, async (__webpack_handle_async_dependencies__) => {
 /* harmony import */ var _actions_github__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__nccwpck_require__.n(_actions_github__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _git__WEBPACK_IMPORTED_MODULE_1__ = __nccwpck_require__(2831);
 /* harmony import */ var _CommentResolver__WEBPACK_IMPORTED_MODULE_2__ = __nccwpck_require__(8034);
+/* harmony import */ var fs_promises__WEBPACK_IMPORTED_MODULE_3__ = __nccwpck_require__(3292);
+/* harmony import */ var fs_promises__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__nccwpck_require__.n(fs_promises__WEBPACK_IMPORTED_MODULE_3__);
 // import { getInput } from '@actions/core'
+
 
 
 
@@ -24393,8 +24399,7 @@ for (const tag of beforeTags) {
 }
 for (const tag of unassignedComments) {
     const created = await octokit.rest.issues.create(githubIssueFromTaggedComment(tag));
-    console.log("issue number is: ");
-    console.dir(created.data, { depth: null });
+    tag.issueNumber = created.data.number;
 }
 for (const tag of updatedComments) {
     await octokit.rest.issues.update({
@@ -24409,10 +24414,18 @@ for (const tag of deletedComments) {
         state: 'closed'
     });
 }
-console.log("before");
-console.log(beforeTags);
-console.log("after");
-console.log(afterTags);
+//do this in reverse order so we dont have to worry about index offset while inserting.
+unassignedComments.reverse();
+for (const tag of unassignedComments) {
+    let insertIndex = tag.commentSrc.value.indexOf(tag.tag);
+    if (insertIndex === -1)
+        throw new Error("assert this should never hapen");
+    insertIndex += tag.tag.length + 1;
+    const contents = await (0,fs_promises__WEBPACK_IMPORTED_MODULE_3__.readFile)(tag.fileName, 'utf-8');
+    const contentsBefore = contents.slice(0, insertIndex);
+    const contentsAfter = contents.slice(insertIndex);
+    await (0,fs_promises__WEBPACK_IMPORTED_MODULE_3__.writeFile)(tag.fileName, `${contentsBefore}[${tag.issueNumber}]${contentsAfter}`);
+}
 function taggedCommentsEqual(tag1, tag2) {
     return tag1.body === tag2.body &&
         tag1.tag === tag2.tag &&
@@ -24484,6 +24497,13 @@ module.exports = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("events");
 /***/ ((module) => {
 
 module.exports = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("fs");
+
+/***/ }),
+
+/***/ 3292:
+/***/ ((module) => {
+
+module.exports = __WEBPACK_EXTERNAL_createRequire(import.meta.url)("fs/promises");
 
 /***/ }),
 

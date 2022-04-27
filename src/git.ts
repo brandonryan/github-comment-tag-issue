@@ -17,3 +17,7 @@ export async function readFileAtCommit(commitSHA: string, filePath: string): Pro
         return undefined
     }
 }
+
+// export async function commitAllChanges() {
+//     await exec(`git commit -a --author="Github Action Bot <>" -m "Assign tagged comment issue numbers"`)
+// }

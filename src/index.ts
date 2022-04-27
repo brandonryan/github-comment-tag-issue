@@ -3,6 +3,7 @@ import { context, getOctokit } from '@actions/github'
 import { gitChangedFiles } from './git'
 import { CommentResolver } from './CommentResolver'
 import type { TaggedComment } from './types'
+import { readFile, writeFile } from 'fs/promises'
 
 const octokit = getOctokit(process.env['GITHUB_TOKEN']!)
 
@@ -61,8 +62,7 @@ for(const tag of beforeTags) {
 
 for(const tag of unassignedComments) {
     const created = await octokit.rest.issues.create(githubIssueFromTaggedComment(tag))
-    console.log("issue number is: ")
-    console.dir(created.data, {depth: null})
+    tag.issueNumber = created.data.number
 }
 for(const tag of updatedComments) {
     await octokit.rest.issues.update({
@@ -78,12 +78,18 @@ for(const tag of deletedComments) {
     })
 }
 
+//do this in reverse order so we dont have to worry about index offset while inserting.
+unassignedComments.reverse()
+for(const tag of unassignedComments) {
+    let insertIndex = tag.commentSrc.value.indexOf(tag.tag)
+    if(insertIndex === -1) throw new Error("assert this should never hapen")
+    insertIndex += tag.tag.length+1
 
-
-console.log("before")
-console.log(beforeTags)
-console.log("after")
-console.log(afterTags)
+    const contents = await readFile(tag.fileName, 'utf-8')
+    const contentsBefore = contents.slice(0, insertIndex)
+    const contentsAfter = contents.slice(insertIndex)
+    await writeFile(tag.fileName, `${contentsBefore}[${tag.issueNumber}]${contentsAfter}`)
+}
 
 function taggedCommentsEqual(tag1: TaggedComment, tag2: TaggedComment) {
     return tag1.body === tag2.body &&

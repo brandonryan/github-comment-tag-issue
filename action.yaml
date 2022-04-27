@@ -2,5 +2,10 @@ name: comment-tag-issue
 description: A tool to create issues based on comment tags
 author: Brandon Ryan
 runs:
-  using: node16
-  main: dist/index.js
+  using: composite
+  steps:
+    - using: node16
+      main: dist/index.js
+    - using: stefanzweifel/git-auto-commit-action@v4
+      with:
+        commit_message: Add issue numbers to tagged comments

@@ -1,4 +1,4 @@
-// i [13]mport { getInput } from '@actions/core'
+// import { getInput } from '@actions/core'
 import { context, getOctokit } from '@actions/github'
 import { gitChangedFiles } from './git'
 import { CommentResolver } from './CommentResolver'
@@ -80,10 +80,8 @@ for(const tag of deletedComments) {
 unassignedComments.reverse()
 for(const tag of unassignedComments) {
     console.dir(tag, {depth: null})
-    let insertIndex = tag.commentSrc.value.toLocaleLowerCase().indexOf(tag.tag)
-    if(insertIndex === -1) throw new Error("assert this should never hapen")
-    insertIndex += tag.tag.length
 
+    const insertIndex = tag.tag.length + tag.commentSrc.index
     const contents = await readFile(tag.fileName, 'utf-8')
     const contentsBefore = contents.slice(0, insertIndex)
     const contentsAfter = contents.slice(insertIndex)

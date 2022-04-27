@@ -4,7 +4,7 @@ author: Brandon Ryan
 runs:
   using: composite
   steps:
-    - uses: ./action-tag.yaml
+    - uses: ./.github/actions/issues
     - uses: stefanzweifel/git-auto-commit-action@v4
       with:
         commit_message: Add issue numbers to tagged comments

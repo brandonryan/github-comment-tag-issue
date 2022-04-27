@@ -24349,8 +24349,6 @@ __nccwpck_require__.a(module, async (__webpack_handle_async_dependencies__) => {
 const octokit = (0,_actions_github__WEBPACK_IMPORTED_MODULE_0__.getOctokit)(process.env['GITHUB_TOKEN']);
 //TODO: better logging
 //with a body!
-//and an even bigger one
-//edited this line
 //more and more...
 //these are not typed unfortunately
 const { before, after } = _actions_github__WEBPACK_IMPORTED_MODULE_0__.context.payload;

@@ -9,8 +9,6 @@ const octokit = getOctokit(process.env['GITHUB_TOKEN']!)
 
 //TODO: better logging
 //with a body!
-//and an even bigger one
-//edited this line
 //more and more...
 
 //these are not typed unfortunately

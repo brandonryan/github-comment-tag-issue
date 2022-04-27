@@ -3,4 +3,4 @@ description: A tool to create issues based on comment tags
 author: Brandon Ryan
 runs:
   using: node16
-  main: dist/index.js
+  main: ../../../dist/index.js

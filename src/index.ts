@@ -1,4 +1,4 @@
-// import { getInput } from '@actions/core'
+// i [13]mport { getInput } from '@actions/core'
 import { context, getOctokit } from '@actions/github'
 import { gitChangedFiles } from './git'
 import { CommentResolver } from './CommentResolver'

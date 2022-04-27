@@ -7,7 +7,7 @@ import { readFile, writeFile } from 'fs/promises'
 
 const octokit = getOctokit(process.env['GITHUB_TOKEN']!)
 
-//TODO: better logging
+//TO [14]DO: better logging
 //with a body!
 //more and more...
 

@@ -1,5 +1,6 @@
-// import { getInput } from '@actions/core'
+import { getInput } from '@actions/core'
 import { context, getOctokit } from '@actions/github'
+// import glob from "@actions/glob"
 import { gitChangedFiles } from './git'
 import { CommentResolver } from './CommentResolver'
 import type { TaggedComment } from './types'
@@ -7,7 +8,10 @@ import { readFile, writeFile } from 'fs/promises'
 
 const octokit = getOctokit(process.env['GITHUB_TOKEN']!)
 
-//TO [14]DO: better logging
+const inp = getInput("include_glob")
+console.log(inp)
+
+//TODO: better logging
 //with a body!
 //more and more...
 

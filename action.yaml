@@ -1,6 +1,15 @@
 name: comment-tag-issue
 description: A tool to create issues based on comment tags
 author: Brandon Ryan
+inputs:
+  exclude_glob:
+    description: List of glob patterns to exclude from comment searching
+    required: false
+    default: []
+  include_glob:
+    description: List of glob patterns to include in comment searching
+    required: false
+    default: ['**']
 runs:
   using: composite
   steps:

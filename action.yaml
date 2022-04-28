@@ -5,15 +5,10 @@ inputs:
   exclude_glob:
     description: List of glob patterns to exclude from comment searching
     required: false
-    default: []
   include_glob:
     description: List of glob patterns to include in comment searching
     required: false
-    default: ['**']
+    default: '**'
 runs:
-  using: composite
-  steps:
-    - uses: ./.github/actions/issues
-    - uses: stefanzweifel/git-auto-commit-action@v4
-      with:
-        commit_message: Add issue numbers to tagged comments
+  using: node16
+  main: ../../../dist/index.js

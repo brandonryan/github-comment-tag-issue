@@ -11,9 +11,11 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 20
-      - name: List log
-        run: git log -n4
       - name: Self
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         uses: ./
+      - name: Commit changes
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Add issue numbers to tagged comments
